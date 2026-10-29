@@ -154,7 +154,7 @@ export const HomeScreen: React.FC<Props> = ({
               ],
             }}
           >
-            <PaperPlaneView width={116} height={72} />
+            <PaperPlaneView width={130} height={110} />
           </Animated.View>
         </View>
 

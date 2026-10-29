@@ -10,8 +10,8 @@ export const PHYSICS = {
   SPEED_GROWTH: 0.035,  // speed increase per meter flown
   MAX_SPEED: 320,       // maximum speed cap
   PLANE_WIDTH: 54,
-  PLANE_HEIGHT: 32,
-  HITBOX_INSET: 8,      // forgiving hitbox
+  PLANE_HEIGHT: 46,
+  HITBOX_INSET: 10,      // forgiving hitbox
 };
 
 export function createInitialPlane(screenHeight: number): PlaneState {
