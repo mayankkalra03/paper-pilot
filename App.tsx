@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, BackHandler } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 
@@ -45,6 +45,20 @@ export default function App() {
 
     initialize();
   }, []);
+
+  // Handle Android hardware back press navigation
+  useEffect(() => {
+    const onBackPress = () => {
+      if (currentScreen !== 'home') {
+        setCurrentScreen('home');
+        return true;
+      }
+      return false; // Allow default Android exit when already on home screen
+    };
+
+    const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return () => subscription.remove();
+  }, [currentScreen]);
 
   if (!isReady) {
     return (

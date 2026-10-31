@@ -8,6 +8,7 @@ import {
   Dimensions,
   Animated,
   Text,
+  BackHandler,
 } from 'react-native';
 import { PlaneState, Obstacle, Collectible, GameState, RunResults, PlayerStats } from '../../types/game';
 import {
@@ -324,6 +325,24 @@ export const GameCanvas: React.FC<Props> = ({
       subscription.remove();
     };
   }, [gameState]);
+
+  // Android hardware/gesture back press handler
+  useEffect(() => {
+    const onBackPress = () => {
+      if (gameState === 'playing') {
+        setGameState('paused');
+        return true;
+      }
+      if (gameState === 'paused' || gameState === 'ready' || gameState === 'gameOver') {
+        onHome();
+        return true;
+      }
+      return false;
+    };
+
+    const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return () => subscription.remove();
+  }, [gameState, onHome]);
 
   // Touch handlers
   const handlePressIn = () => {

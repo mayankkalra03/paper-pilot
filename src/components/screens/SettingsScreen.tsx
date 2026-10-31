@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   Switch,
   TouchableOpacity,
   Modal,
+  BackHandler,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { PALETTE, FONTS, SHADOWS } from '../../constants/theme';
@@ -32,6 +33,20 @@ export const SettingsScreen: React.FC<Props> = ({
 }) => {
   const insets = useSafeAreaInsets();
   const [showConfirmReset, setShowConfirmReset] = useState(false);
+
+  useEffect(() => {
+    const onBackPress = () => {
+      if (showConfirmReset) {
+        setShowConfirmReset(false);
+        return true;
+      }
+      onBack();
+      return true;
+    };
+
+    const sub = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return () => sub.remove();
+  }, [showConfirmReset, onBack]);
 
   const handleToggleSound = async (val: boolean) => {
     soundService.setEnabled(val);

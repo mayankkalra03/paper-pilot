@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Modal,
+  BackHandler,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle, Path } from 'react-native-svg';
@@ -33,6 +34,20 @@ export const PostcardsScreen: React.FC<Props> = ({ stats, onBack }) => {
     hapticService.tap();
     setSelectedPostcard(pc);
   };
+
+  useEffect(() => {
+    const onBackPress = () => {
+      if (selectedPostcard) {
+        setSelectedPostcard(null);
+        return true;
+      }
+      onBack();
+      return true;
+    };
+
+    const sub = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return () => sub.remove();
+  }, [selectedPostcard, onBack]);
 
   return (
     <View style={styles.container}>
